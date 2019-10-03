@@ -233,6 +233,27 @@
   (helm-backup--remove-file-backups (buffer-file-name)))
 
 ;;;###autoload
+(defun helm-backup-ivy ()
+  "Main function used to call `helm-backup`."
+  (interactive)
+  (let ((helm-quit-if-no-candidate
+         (lambda ()
+           (error
+            "No filename associated with buffer, file has no backup yet or filename is blacklisted"))))
+    (ivy-read
+     (format "Backup for %s" (buffer-file-name))
+     (helm-backup--list-file-change-time (buffer-file-name))
+     :action (lambda (candidate) (helm-backup--create-ediff (cdr candidate) (current-buffer))))))
+
+(ivy-set-actions
+ 'helm-backup-ivy
+ '(("r" (lambda (candidate)
+          (with-helm-current-buffer
+           (helm-backup--replace-current-buffer (cdr candidate) (buffer-file-name)))) "Replace current buffer")
+   ("f" (lambda (candidate)
+          (helm-backup--open-in-new-buffer (cdr candidate) (buffer-file-name))) "Open in new buffer")))
+
+;;;###autoload
 (defun helm-backup ()
   "Main function used to call `helm-backup`."
   (interactive)
