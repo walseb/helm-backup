@@ -5,7 +5,7 @@
 ;; Author: Anthony HAMON <hamon.anth@gmail.com>
 ;; URL: http://github.com/antham/helm-backup
 ;; Version: 1.1.1
-;; Package-Requires: ((helm "1.5.5") (s "1.8.0") (cl-lib "0"))
+;; Package-Requires: ((ivy "0.12.0") (helm "1.5.5") (s "1.8.0") (cl-lib "0"))
 ;; Keywords: backup, convenience, files, tools, vc
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -35,6 +35,7 @@
 
 ;;; Code:
 
+(require 'ivy)
 (require 'helm)
 (require 'helm-utils)
 (require 'cl-lib)
