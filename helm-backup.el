@@ -244,13 +244,14 @@
     (ivy-read
      (format "Backup for %s" (buffer-file-name))
      (helm-backup--list-file-change-time (buffer-file-name))
-     :action (lambda (candidate) (helm-backup--create-ediff (cdr candidate) (current-buffer))))))
+     :action (lambda (candidate)
+               (with-helm-current-buffer
+                (helm-backup--replace-current-buffer (cdr candidate) (buffer-file-name)))))))
 
 (ivy-set-actions
  'helm-backup-ivy
- '(("r" (lambda (candidate)
-          (with-helm-current-buffer
-           (helm-backup--replace-current-buffer (cdr candidate) (buffer-file-name)))) "Replace current buffer")
+ '(("e" (lambda (candidate)
+          (helm-backup--create-ediff (cdr candidate) (current-buffer))) "Ediff file with backup")
    ("f" (lambda (candidate)
           (helm-backup--open-in-new-buffer (cdr candidate) (buffer-file-name))) "Open in new buffer")))
 
